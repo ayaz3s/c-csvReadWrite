@@ -84,6 +84,7 @@ namespace CsvReaderTest
             Map(m => m.id).Name("id");
             Map(m => m.heightFt).Name("heightft");
             Map(m => m.weight).Name("weight");
+            Map(m => m.unWanted).Ignore();
             
         }
     }
@@ -93,7 +94,7 @@ namespace CsvReaderTest
         public int id {get; set;}
         public float heightFt {get; set;}
         public float weight {get; set;}
-
+        public dynamic? unWanted {get; set;}
         public float bmi {get; set;}
 
         public float calcBmi(){
