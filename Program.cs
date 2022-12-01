@@ -44,23 +44,28 @@ namespace CsvReaderTest
 
             if (this.records != null){
                 // add the bmi column
-                addBmiCol(this.records);
+
+                List<Person> newRecords = new List<Person>();
+                foreach (Person person in records)
+                {
+                    if (person.heightFt != 0 && person.weight != 0){
+                        addBmiCol(person);
+                        newRecords.Add(person);
+                    }
+                }
 
                 using(var streamWriter = new StreamWriter(@"testcsvwithbmi.csv"))
                 using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
                 {
-                    csvWriter.WriteRecords(records);
+                    csvWriter.WriteRecords(newRecords);
                     csvWriter.Dispose();
                     streamWriter.Dispose();
                 }
             }
         }
 
-        public void addBmiCol(List<Person> records){
-            foreach (Person person in records)
-            {
-                person.bmi = person.calcBmi();
-            }
+        public void addBmiCol(Person person){
+            person.bmi = person.calcBmi();
         }
 
         public void viewBmi(List<Person> records){
