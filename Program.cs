@@ -13,6 +13,7 @@ namespace CsvReaderTest
         {
             CsvRecords csvRecords = new CsvRecords();
             csvRecords.readCsv();
+            csvRecords.writeCsv();
         }
         
     }
@@ -22,11 +23,6 @@ namespace CsvReaderTest
         public List<Person>? records;
 
         public void readCsv(){
-
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HeaderValidated = null
-            };
 
             // using statement to release the resource
             using(var streamReader = new StreamReader(@"testcsv.csv"))
@@ -42,18 +38,28 @@ namespace CsvReaderTest
 
             }
 
-            this.addBmiCol(this.records);
+        }
+
+        public void writeCsv(){
+
+            if (this.records != null){
+                // add the bmi column
+                addBmiCol(this.records);
+
+                using(var streamWriter = new StreamWriter(@"testcsvwithbmi.csv"))
+                using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                {
+                    csvWriter.WriteRecords(records);
+                    csvWriter.Dispose();
+                    streamWriter.Dispose();
+                }
+            }
         }
 
         public void addBmiCol(List<Person> records){
             foreach (Person person in records)
             {
                 person.bmi = person.calcBmi();
-            }
-            using(var streamWriter = new StreamWriter(@"testcsvwithbmi.csv"))
-            using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-            {
-                csvWriter.WriteRecords(records);
             }
         }
 
