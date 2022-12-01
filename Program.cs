@@ -96,7 +96,8 @@ namespace CsvReaderTest
             float weight = this.weight;
 
             // 1 foot = 0.3048 meter
-            float bmi = weight/(heightFt*0.3048f);
+            // bmi = kg/m^2
+            float bmi = weight/((heightFt*0.3048f)*(heightFt*0.3048f));
             return bmi;
         }
     }
